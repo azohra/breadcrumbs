@@ -1,18 +1,8 @@
 defmodule Breadcrumbs do
-  @moduledoc """
-  Documentation for Breadcrumbs.
-  """
+  @moduledoc false
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Breadcrumbs.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  @doc false
+  def render(tickets, module \\ Breadcrumbs.BasicRenderer) do
+    apply(module, :render, [tickets])
   end
 end

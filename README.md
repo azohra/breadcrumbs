@@ -1,6 +1,6 @@
 # Breadcrumbs
 
-**TODO: Add description**
+Elixir application to scrape and render release notes based on Jira tickets
 
 ## Installation
 
