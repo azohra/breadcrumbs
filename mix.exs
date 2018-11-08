@@ -25,6 +25,7 @@ defmodule Breadcrumbs.MixProject do
 
   defp deps do
     [
+      {:ex_doc, ">= 0.0.0", only: :dev},
       {:tesla, "~> 1.2"},
       {:poison, ">= 1.2.0"},
       {:poolboy, "~> 1.5"},
@@ -39,7 +40,7 @@ defmodule Breadcrumbs.MixProject do
 
   defp package() do
     [
-      files: ~w(lib .formatter.exs mix.exs README.md LICENSE.md CHANGELOG.md TODO.md),
+      files: ~w(lib .formatter.exs mix.exs README.md LICENSE.md CHANGELOG.md),
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/azohra/Breadcrumbs"}
     ]
