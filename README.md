@@ -1,11 +1,14 @@
 # Breadcrumbs
 
+[![Hex pm](http://img.shields.io/hexpm/v/breadcrumbs.svg?style=flat)](https://hex.pm/packages/breadcrumbs)
+
+[![GitHub license](https://img.shields.io/github/license/azohra/Breadcrumbs.svg)](https://github.com/azohra/Breadcrumbs/blob/master/LICENSE.md)
+
 An elixir application that scrapes and renders release notes based on Jira tickets.
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `breadcrumbs` to your list of dependencies in `mix.exs`:
+The package can be installed by adding `breadcrumbs` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
