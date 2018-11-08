@@ -8,11 +8,14 @@ defmodule Breadcrumbs.MixProject do
       elixir: "~> 1.7",
       test_coverage: [tool: ExCoveralls],
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      description: description(),
+      package: package(),
+      name: "Breadcrumbs",
+      source_url: "https://github.com/azohra/Breadcrumbs"
     ]
   end
 
-  # Run "mix help compile.app" to learn about applications.
   def application do
     [
       extra_applications: [:logger],
@@ -20,7 +23,6 @@ defmodule Breadcrumbs.MixProject do
     ]
   end
 
-  # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
       {:tesla, "~> 1.2"},
@@ -28,6 +30,18 @@ defmodule Breadcrumbs.MixProject do
       {:poolboy, "~> 1.5"},
       {:credo, "~> 0.10.0", only: :dev},
       {:excoveralls, "~> 0.10", only: :test},
+    ]
+  end
+
+  defp description() do
+    "An elixir application that scrapes and renders release notes based on Jira tickets."
+  end
+
+  defp package() do
+    [
+      files: ~w(lib .formatter.exs mix.exs README.md LICENSE.md CHANGELOG.md TODO.md),
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/azohra/Breadcrumbs"}
     ]
   end
 end
