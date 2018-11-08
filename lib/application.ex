@@ -8,6 +8,8 @@ defmodule Breadcrumbs.Application do
 
     pool_size = get_config()
 
+    IO.inspect("\n\n#{pool_size}\n\n")
+
     children = [
       worker(Breadcrumbs.Pool, [pool_size])
     ]

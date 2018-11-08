@@ -24,9 +24,9 @@ defmodule Breadcrumbs.MixProject do
   defp deps do
     [
       {:tesla, "~> 1.2"},
-      {:poison, "~> 4.0"},
+      {:poison, ">= 1.2.0"},
       {:poolboy, "~> 1.5"},
-      {:credo, "~> 0.10.2"},
+      {:credo, "~> 0.10.0", only: :dev},
       {:excoveralls, "~> 0.10", only: :test},
     ]
   end
