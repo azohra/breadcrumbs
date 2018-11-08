@@ -19,7 +19,7 @@ end
 
 First, you will need to configure the url of your organizations Jira api endpoint:
 
-```Elixir
+```elixir
 config :breadcrumbs, jira_api_url: "https://jira.example.com/rest/agile/{version}"
 ```
 
@@ -33,11 +33,12 @@ Finally, Breadcrumbs uses a pool of supervised workers to send your api requests
 By default there are 10 workers and each worker can only send one request at a time.
 You can specify the number of workers like this:
 
-```Elixir
+```elixir
 config :breadcrumbs, pool_size: 4
 ```
 
 Altogether your configuration should look something like this
+
 ```elixir
 config :breadcrumbs,
   jira_api_url: "https://jira.example.com/rest/agile/{version}",
@@ -57,7 +58,7 @@ different team's tickets, and use different renderers to get different styles of
 Here is how to use Breadcrumbs
 
 
-```Elixir
+```elixir
   tickets = ["SAMPLE-001", "SAMPLE-002", ...]
 
   # Will use the built-in basic renderer and formatter
@@ -84,7 +85,7 @@ Overall, renderers just define the layout of the release note.
 Here is Breadcrumbs' built-in renderer. If you design a custom renderer, your implementation of 
 render/1 will define the structure of your release notes, while including or ommiting any data you choose.  
 
-```Elixir
+```elixir
   def render(tickets) do
     valid =
       tickets.valid
@@ -111,7 +112,7 @@ ways.
 
 Here is Breadcrumbs' built-in formatter.
 
-```Elixir
+```elixir
   def format(%Ticket{} = ticket) do
     "Ticket: #{ticket.key}"
   end
