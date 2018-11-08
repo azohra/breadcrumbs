@@ -6,6 +6,7 @@ defmodule Breadcrumbs.MixProject do
       app: :breadcrumbs,
       version: "0.1.0",
       elixir: "~> 1.7",
+      test_coverage: [tool: ExCoveralls],
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -14,7 +15,8 @@ defmodule Breadcrumbs.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger]
+      extra_applications: [:logger],
+      mod: {Breadcrumbs.Application, []}
     ]
   end
 
@@ -22,7 +24,10 @@ defmodule Breadcrumbs.MixProject do
   defp deps do
     [
       {:tesla, "~> 1.2"},
-      {:poison, "~> 4.0"}
+      {:poison, "~> 4.0"},
+      {:poolboy, "~> 1.5"},
+      {:credo, "~> 0.10.2"},
+      {:excoveralls, "~> 0.10", only: :test},
     ]
   end
 end

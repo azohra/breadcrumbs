@@ -3,16 +3,25 @@ defmodule Breadcrumbs.Clients.Jira do
 
   use Tesla
 
-  @jira_base_url Application.get_env(:breadcrumbs, :jira_base_url)
-  @jira_headers Application.get_env(:breadcrumbs, :jira_headers)
+  use Task, restart: :transient
 
-  plug(Tesla.Middleware.BaseUrl, @jira_base_url)
-  plug(Tesla.Middleware.Headers, @jira_headers)
+  import Breadcrumbs.Pool, only: [distribute_request: 1]
+
+  @pool_size Application.get_env(:breadcrumbs, :pool_size)
+
+  plug(Tesla.Middleware.BaseUrl, Application.get_env(:breadcrumbs, :jira_api_url))
+
+  plug(Tesla.Middleware.Headers, [
+    {"content-type", "application/json"},
+    Application.get_env(:breadcrumbs, :jira_api_auth)
+  ])
 
   @doc false
   def get_issues(ids) do
     ids
-    |> Enum.map(fn id -> get_issue(id) end)
+    |> Enum.chunk_every(@pool_size)
+    |> Enum.map(fn list -> pmap(list, &distribute_request/1) end)
+    |> List.flatten()
     |> Enum.reduce(%ScrapeData{valid: [], errors: []}, fn resp, acc -> organize(resp, acc) end)
   end
 
@@ -20,7 +29,7 @@ defmodule Breadcrumbs.Clients.Jira do
   def get_issue(issue) do
     case get("/issue/#{issue}") do
       {:error, reason} ->
-        {:error, %{issue: issue, reason: reason}}
+        {:error, %ErrorTicket{key: issue, reason: reason}}
 
       {:ok, resp} ->
         parse_resp(resp, issue)
@@ -38,7 +47,13 @@ defmodule Breadcrumbs.Clients.Jira do
         {:ok, ticket}
 
       404 ->
-        {:error, %ErrorTicket{ticket: issue_id, reason: "not found"}}
+        {:error, %ErrorTicket{key: issue_id, reason: "not found"}}
+
+      502 ->
+        {:error, %ErrorTicket{key: issue_id, reason: "rate limit exceeded"}}
+
+      code ->
+        {:error, %ErrorTicket{key: issue_id, reason: "code #{code}"}}
     end
   end
 
@@ -56,4 +71,10 @@ defmodule Breadcrumbs.Clients.Jira do
 
   defp organize({:error, error}, %ScrapeData{valid: valid, errors: errors}),
     do: %ScrapeData{valid: valid, errors: [error | errors]}
+
+  def pmap(collection, func) do
+    collection
+    |> Enum.map(&Task.async(fn -> func.(&1) end))
+    |> Enum.map(&Task.await(&1, :infinity))
+  end
 end

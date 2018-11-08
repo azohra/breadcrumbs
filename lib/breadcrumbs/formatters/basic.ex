@@ -2,18 +2,14 @@ defmodule Breadcrumbs.BasicFormatter do
   @moduledoc false
   @behaviour Breadcrumbs.Formatter
 
-  import Breadcrumbs.Utils, only: [appendln: 2]
-
-  import Breadcrumbs.Markdown
-
   @doc false
-  @spec format(map()) :: String.t()
-  def format(ticket) do
-    %{
-      key: key
-    } = ticket
+  @spec format(%Ticket{}) :: String.t()
+  def format(%Ticket{} = ticket) do
+    "Closed: #{ticket.key}"
+  end
 
-    ""
-    |> appendln("Ticket: #{key}")
+  @spec format(%ErrorTicket{}) :: String.t()
+  def format(%ErrorTicket{} = error) do
+    "Error in getting ticket: #{error.key}, Reason: #{error.reason}"
   end
 end
