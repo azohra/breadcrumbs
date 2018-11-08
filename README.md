@@ -133,7 +133,7 @@ Release Notes:
 Closed: SAMPLE-001
 Closed: SAMPLE-002
 Errors:
-Error in getting ticket: EP-780, Reason: not found
+Error in getting ticket: SAMPLE-003, Reason: not found
 ```
 
 ## Extending
