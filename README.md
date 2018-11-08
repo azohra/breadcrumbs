@@ -129,7 +129,7 @@ Here is Breadcrumbs' built-in formatter.
 ```
 Release Notes:
 Closed: SAMPLE-001
-closed: SAMPLE-002
+Closed: SAMPLE-002
 Errors:
 Error in getting ticket: EP-780, Reason: not found
 ```
