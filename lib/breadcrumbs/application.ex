@@ -9,17 +9,19 @@ defmodule Breadcrumbs.Application do
     pool_size = get_config()
 
     children = [
-      worker(Breadcrumbs.Pool, [pool_size])
+      worker(Breadcrumbs.Pool, [pool_size]),
+      worker(Breadcrumbs.PoolIndex, [pool_size])
     ]
 
-    Supervisor.start_link(children, strategy: :one_for_one)
+    Supervisor.start_link(children, [strategy: :one_for_one, name: __MODULE__])
   end
 
   defp get_config do
     specified = Application.get_env(:breadcrumbs, :pool_size)
 
     case specified do
-      nil -> 10
+      nil -> 4
+      0 -> raise Breadcrumbs.ConfigError, message: "Pool size cannot be 0"
       val -> val
     end
   end

@@ -3,13 +3,11 @@ defmodule Breadcrumbs.PoolWorker do
 
   use GenServer
 
-  @timeout :infinity
-
   import Breadcrumbs.Clients.Jira, only: [get_issue: 1]
 
   @doc false
-  def start_link([]) do
-    GenServer.start_link(__MODULE__, [], [])
+  def start_link(args) do
+    GenServer.start_link(__MODULE__, [], args)
   end
 
   @doc false
@@ -23,7 +21,7 @@ defmodule Breadcrumbs.PoolWorker do
   end
 
   @doc false
-  def make_request(pid, ticket_id) do
-    GenServer.call(pid, {:get, ticket_id}, @timeout)
+  def handle_call(:ping, _from, state) do
+    {:reply, "pong", state}
   end
 end

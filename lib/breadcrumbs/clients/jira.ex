@@ -7,8 +7,6 @@ defmodule Breadcrumbs.Clients.Jira do
 
   import Breadcrumbs.Pool, only: [distribute_request: 1]
 
-  @pool_size Application.get_env(:breadcrumbs, :pool_size)
-
   plug(Tesla.Middleware.BaseUrl, Application.get_env(:breadcrumbs, :jira_api_url))
 
   plug(Tesla.Middleware.Headers, [
@@ -19,9 +17,7 @@ defmodule Breadcrumbs.Clients.Jira do
   @doc false
   def get_issues(ids) do
     ids
-    |> Enum.chunk_every(@pool_size)
-    |> Enum.map(fn list -> pmap(list, &distribute_request/1) end)
-    |> List.flatten()
+    |> pmap(&distribute_request/1)
     |> Enum.reduce(%ScrapeData{valid: [], errors: []}, fn resp, acc -> organize(resp, acc) end)
   end
 

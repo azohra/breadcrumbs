@@ -12,7 +12,7 @@ The package can be installed by adding `breadcrumbs` to your list of dependencie
 ```elixir
 def deps do
   [
-    {:breadcrumbs, "~> 0.1.1"}
+    {:breadcrumbs, "~> 0.2.0"}
   ]
 end
 ```
@@ -32,11 +32,11 @@ config :breadcrumbs, jira_api_auth: {"Authorization", "your_key_here"}
 ```
 
 Finally, Breadcrumbs uses a pool of supervised workers to send your api requests concurrently.
-By default there are 10 workers and each worker can only send one request at a time.
+By default there are 4 workers and each worker can only send one request at a time.
 You can specify the number of workers like this:
 
 ```elixir
-config :breadcrumbs, pool_size: 4
+config :breadcrumbs, pool_size: 2
 ```
 
 Altogether your configuration should look something like this
@@ -45,7 +45,7 @@ Altogether your configuration should look something like this
 config :breadcrumbs,
   jira_api_url: "https://jira.example.com/rest/agile/{version}",
   jira_api_auth: {"Authorization", "your_key_here"},
-  pool_size: 4
+  pool_size: 2
 ```
 
 ## Usage
@@ -73,8 +73,8 @@ Here is how to use Breadcrumbs
 ### Renderers
 
 Renderers follow the [renderer](lib/breadcrumbs/schema/renderer_spec.ex) behaivior. They recieve a 
-[%ScrapeData{}](lib/breadcrumbs/schema/scrape_data.ex) struct which contains a list of [%Ticket{}](lib/breadcrumbs/schema/ticket.ex)s
-and a list of [%ErrorTicket{}](lib/breadcrumbs/schema/ticket.ex)s that indicate which tickets Breadcrumbs was unable to get.
+[%ScrapeData{}](lib/breadcrumbs/schema/scrape_data.ex) struct which contains a list of [%Ticket{}](lib/breadcrumbs/schema/ticket.ex)
+and a list of [%ErrorTicket{}](lib/breadcrumbs/schema/ticket.ex) that indicate which tickets Breadcrumbs was unable to get.
 The renderer then goes through tickets and uses a [formatter](lib/breadcrumbs/schema/formatter_spec.ex) to stringify each ticket. 
 Renderers then arrange these stringified tickets into a complete release note. A renderer must return a string.
 
